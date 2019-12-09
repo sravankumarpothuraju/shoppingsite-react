@@ -10,7 +10,10 @@ export default props => {
       {props.products
         ? props.products.map((value, index) => {
             return (
-              <div key={index}>
+              <div
+                key={index}
+                onClick={() => props.history.push("/product/" + value.slug)}
+              >
                 <img src={value.image} />
                 <h2>{value.name}</h2>
                 <p className="description">{value.description}</p>

@@ -1,31 +1,30 @@
-import React, { useState } from 'react';
-
+import React, { useState } from "react";
 
 const slugify = str => {
-  str = str || ''
+  str = str || "";
   const a =
-      'àáäâèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;άαβγδεέζήηθιίϊΐκλμνξοόπρσςτυϋύΰφχψωώ'
+    "àáäâèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;άαβγδεέζήηθιίϊΐκλμνξοόπρσςτυϋύΰφχψωώ";
   const b =
-      'aaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------aavgdeeziitiiiiklmnxooprsstyyyyfhpoo'
-  const p = new RegExp(a.split('').join('|'), 'g')
+    "aaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------aavgdeeziitiiiiklmnxooprsstyyyyfhpoo";
+  const p = new RegExp(a.split("").join("|"), "g");
 
   return str
-      .toString()
-      .trim()
-      .toLowerCase()
-      .replace(/ου/g, 'ou')
-      .replace(/ευ/g, 'eu')
-      .replace(/θ/g, 'th')
-      .replace(/ψ/g, 'ps')
-      .replace(/\//g, '-')
-      .replace(/\s+/g, '-') // Replace spaces with -
-      .replace(p, c => b.charAt(a.indexOf(c))) // Replace special chars
-      .replace(/&/g, '-and-') // Replace & with 'and'
-      .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-      .replace(/\-\-+/g, '-') // Replace multiple - with single -
-      .replace(/^-+/, '') // Trim - from start of text
-      .replace(/-+$/, '') // Trim - from end of text
-}
+    .toString()
+    .trim()
+    .toLowerCase()
+    .replace(/ου/g, "ou")
+    .replace(/ευ/g, "eu")
+    .replace(/θ/g, "th")
+    .replace(/ψ/g, "ps")
+    .replace(/\//g, "-")
+    .replace(/\s+/g, "-") // Replace spaces with -
+    .replace(p, c => b.charAt(a.indexOf(c))) // Replace special chars
+    .replace(/&/g, "-and-") // Replace & with 'and'
+    .replace(/[^\w\-]+/g, "") // Remove all non-word chars
+    .replace(/\-\-+/g, "-") // Replace multiple - with single -
+    .replace(/^-+/, "") // Trim - from start of text
+    .replace(/-+$/, ""); // Trim - from end of text
+};
 
 export default props => {
   const [name, setName] = useState();
@@ -49,8 +48,8 @@ export default props => {
 
   const addProduct = e => {
     e.preventDefault();
-    props.addProduct({ name, price, description, image, slug: slugify(name) })
-    props.history.push('/')
+    props.addProduct({ name, price, description, image, slug: slugify(name) });
+    props.history.push("/");
   };
 
   return (
@@ -74,7 +73,7 @@ export default props => {
           <label>Image Url:</label>
           <input required onChange={handleChangeImage} />
         </div>
-        <input type='submit' value='Add' className='button'></input>
+        <input type="submit" value="Add" className="button"></input>
       </form>
     </div>
   );
