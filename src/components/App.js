@@ -1,21 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
-
 
 import "../App.css";
 
 import AddProduct from "./AddProduct";
 import ProductsList from "./ProductsList";
 import SingleProduct from "./SingleProduct";
-import Cart from './Cart.js'
-
+import Cart from "./Cart.js";
 
 const App = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
 
+  useEffect(() => {
+    setProducts(JSON.parse(localStorage.getItem("products")) || []);
+    setCart(JSON.parse(localStorage.getItem("cart")) || []);
+  }, []);
+
   const addProduct = product => {
-    setProducts([...products, product]);
+    const updatedProducts = [...products, product];
+    setProducts(updatedProducts);
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
   const deleteProduct = index => {
@@ -24,27 +29,27 @@ const App = () => {
       .slice(0, index)
       .concat(updatedProducts.slice(index + 1, updatedProducts.length));
     setProducts(updatedProducts);
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
   };
 
   const addToCart = ({ product, quantity }) => {
     const index = cart.findIndex(
-        itemInCart => itemInCart.product.slug === product.slug
-    )
+      itemInCart => itemInCart.product.slug === product.slug
+    );
 
     let newCart = [];
 
-    if(index ===-1) {
+    if (index === -1) {
       //not existing
-      newCart = [...cart, {product,quantity }]
-
+      newCart = [...cart, { product, quantity }];
     } else {
-      quantity += cart[index].quantity
+      quantity += cart[index].quantity;
       newCart = cart
-          .filter(item =>item.product.slug!==product.slug)
-          .concat({product, quantity})
+        .filter(item => item.product.slug !== product.slug)
+        .concat({ product, quantity });
     }
     setCart(newCart);
-
+    localStorage.setItem("cart", JSON.stringify(newCart));
   };
 
   return (
@@ -56,7 +61,7 @@ const App = () => {
         </aside>
 
         <main>
-          <Cart cart={cart}/>
+          <Cart cart={cart} />
           <Route
             exact
             path="/"
